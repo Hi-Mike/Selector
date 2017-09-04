@@ -11,37 +11,13 @@ import java.util.List;
 
 public class City implements Parcelable {
     private String name;
-    private String code;
-    private List<City> cities;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public List<City> getCities() {
-        return cities;
-    }
-
-    public void setCities(List<City> cities) {
-        this.cities = cities;
-    }
+    private String zip;
+    private List<City> city;
 
     protected City(Parcel in) {
         name = in.readString();
-        code = in.readString();
-        cities = in.createTypedArrayList(City.CREATOR);
+        zip = in.readString();
+        city = in.createTypedArrayList(City.CREATOR);
     }
 
     public static final Creator<City> CREATOR = new Creator<City>() {
@@ -56,22 +32,39 @@ public class City implements Parcelable {
         }
     };
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public List<City> getCity() {
+        return city;
+    }
+
+    public void setCity(List<City> city) {
+        this.city = city;
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(code);
-        dest.writeTypedList(cities);
-    }
-
-    @Override
-    public String toString() {
-        return "City{" +
-                "name='" + name + '\'' +
-                '}';
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(zip);
+        parcel.writeTypedList(city);
     }
 }

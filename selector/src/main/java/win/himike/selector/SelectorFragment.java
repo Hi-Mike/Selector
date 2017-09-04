@@ -105,7 +105,7 @@ public class SelectorFragment extends Fragment {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ArrayList<City> cities = (ArrayList<City>) mData.get(getAdapterPosition()).getCities();
+                        ArrayList<City> cities = (ArrayList<City>) mData.get(getAdapterPosition()).getCity();
                         if (cities != null && !cities.isEmpty()) {
                             ArrayList<City> copy = new ArrayList<>(mSelected);
                             copy.add(mData.get(getAdapterPosition()));
