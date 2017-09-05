@@ -3,6 +3,8 @@ package win.himike.selector.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -10,9 +12,15 @@ import java.util.List;
  */
 
 public class City implements Parcelable {
+    @SerializedName("name")
     private String name;
+    @SerializedName("zip")
     private String zip;
+    @SerializedName("city")
     private List<City> city;
+
+    public City() {
+    }
 
     protected City(Parcel in) {
         name = in.readString();
