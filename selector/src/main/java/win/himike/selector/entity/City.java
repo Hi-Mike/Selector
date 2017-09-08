@@ -3,29 +3,26 @@ package win.himike.selector.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
-
 /**
  * Created by HiMike on 2017/9/3.
  */
 
 public class City implements Parcelable {
-    @SerializedName("name")
+    private int id;
+    private int level;//第几级城市
+    private int cid;//城市编码
+    private int parentId;
     private String name;
-    @SerializedName("zip")
-    private String zip;
-    @SerializedName("city")
-    private List<City> city;
 
     public City() {
     }
 
     protected City(Parcel in) {
+        id = in.readInt();
+        level = in.readInt();
+        cid = in.readInt();
+        parentId = in.readInt();
         name = in.readString();
-        zip = in.readString();
-        city = in.createTypedArrayList(City.CREATOR);
     }
 
     public static final Creator<City> CREATOR = new Creator<City>() {
@@ -40,6 +37,38 @@ public class City implements Parcelable {
         }
     };
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getCid() {
+        return cid;
+    }
+
+    public void setCid(int cid) {
+        this.cid = cid;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
+    }
+
     public String getName() {
         return name;
     }
@@ -48,31 +77,28 @@ public class City implements Parcelable {
         this.name = name;
     }
 
-    public String getZip() {
-        return zip;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    public List<City> getCity() {
-        return city;
-    }
-
-    public void setCity(List<City> city) {
-        this.city = city;
-    }
-
     @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(name);
-        parcel.writeString(zip);
-        parcel.writeTypedList(city);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(level);
+        dest.writeInt(cid);
+        dest.writeInt(parentId);
+        dest.writeString(name);
+    }
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "id=" + id +
+                ", level=" + level +
+                ", cid=" + cid +
+                ", parentId=" + parentId +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

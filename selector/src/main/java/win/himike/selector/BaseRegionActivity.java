@@ -4,11 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import win.himike.selector.entity.City;
@@ -36,12 +31,11 @@ public abstract class BaseRegionActivity extends AppCompatActivity implements Ca
     }
 
     private void inflateData() {
-        InputStream inputStream = getResources().openRawResource(R.raw.city);
-        final ArrayList<City> cities = new Gson().fromJson(new InputStreamReader(inputStream), new TypeToken<ArrayList<City>>() {
-        }.getType());
+        SQLiteHelper sqLiteHelper = new SQLiteHelper(this);
+        ArrayList<City> cities = sqLiteHelper.queryCity(1);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, SelectorFragment.newInstance(cities, new ArrayList<City>()))
+                .replace(R.id.container, SelectorFragment.newInstance(cities))
                 .commit();
     }
 

@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import win.himike.selector.entity.City;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,12 +30,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
-            ArrayList<City> cities = data.getParcelableArrayListExtra(RegionActivity.SELECTED);
-            StringBuilder sb = new StringBuilder();
-            for (City city : cities) {
-                sb.append(city.getName());
-            }
-            mTextView.setText(sb.toString());
+            City city = data.getParcelableExtra(RegionActivity.SELECTED);
+            mTextView.setText(city.getName());
         }
     }
 }

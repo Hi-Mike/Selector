@@ -1,7 +1,5 @@
 package win.himike.selector;
 
-import java.util.ArrayList;
-
 import win.himike.selector.entity.City;
 
 /**
@@ -9,5 +7,5 @@ import win.himike.selector.entity.City;
  */
 
 public interface CallBack {
-    void onSelect(ArrayList<City> cities);
+    void onSelect(City city);
 }

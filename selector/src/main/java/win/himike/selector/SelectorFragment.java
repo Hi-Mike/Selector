@@ -17,7 +17,6 @@ import java.util.List;
 import win.himike.selector.entity.City;
 
 import static win.himike.selector.BaseRegionActivity.CITY;
-import static win.himike.selector.BaseRegionActivity.SELECTED;
 
 /**
  * Created by HiMike on 2017/9/3.
@@ -25,11 +24,9 @@ import static win.himike.selector.BaseRegionActivity.SELECTED;
 
 public class SelectorFragment extends Fragment {
 
-
-    public static SelectorFragment newInstance(ArrayList<City> cityList, ArrayList<City> selected) {
+    public static SelectorFragment newInstance(ArrayList<City> cityList) {
         Bundle args = new Bundle();
         args.putParcelableArrayList(CITY, cityList);
-        args.putParcelableArrayList(SELECTED, selected);
         SelectorFragment fragment = new SelectorFragment();
         fragment.setArguments(args);
         return fragment;
@@ -38,19 +35,16 @@ public class SelectorFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ItemAdapter mAdapter;
     private ArrayList<City> mCity;
-    private ArrayList<City> mSelected;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCity = getArguments().getParcelableArrayList(CITY);
-        mSelected = getArguments().getParcelableArrayList(SELECTED);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mSelected.clear();
         mCity.clear();
     }
 
@@ -105,19 +99,17 @@ public class SelectorFragment extends Fragment {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ArrayList<City> cities = (ArrayList<City>) mData.get(getAdapterPosition()).getCity();
+                        SQLiteHelper helper = new SQLiteHelper(getActivity());
+                        ArrayList<City> cities = helper.queryCity(mData.get(getAdapterPosition()).getCid());
                         if (cities != null && !cities.isEmpty()) {
-                            ArrayList<City> copy = new ArrayList<>(mSelected);
-                            copy.add(mData.get(getAdapterPosition()));
                             getFragmentManager()
                                     .beginTransaction()
-                                    .replace(R.id.container, SelectorFragment.newInstance(cities, copy))
+                                    .replace(R.id.container, SelectorFragment.newInstance(cities))
                                     .addToBackStack(null)
                                     .commit();
                         } else {
                             if (getActivity() instanceof CallBack) {
-                                mSelected.add(mData.get(getAdapterPosition()));
-                                ((CallBack) getActivity()).onSelect(mSelected);
+                                ((CallBack) getActivity()).onSelect(mData.get(getAdapterPosition()));
                             } else {
                                 throw new RuntimeException("the activity should implement CallBack");
                             }
