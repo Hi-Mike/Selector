@@ -55,7 +55,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<City> queryCity(int cid) {
+    /**
+     * 根据上级城市查询下属城市列表
+     *
+     * @param cid 上级城市id
+     * @return
+     */
+    public ArrayList<City> queryCityList(int cid) {
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.query("citycode", null, "parentId=?", new String[]{cid + ""}, null, null, null);
         ArrayList<City> cityList = new ArrayList<>();
@@ -72,7 +78,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return cityList;
     }
 
-    public List<City> queryCities(int parentId) {
+    /**
+     * 根据下属城市查询父级城市
+     *
+     * @param parentId 下属城市id
+     * @return
+     */
+    public List<City> querySelectCityList(int parentId) {
         ArrayList<City> cityList = new ArrayList<>();
         City city = queryCityByCid(parentId);
         while (city.getLevel() != 1) {
@@ -83,9 +95,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return cityList;
     }
 
-    private City queryCityByCid(int parentId) {
+    /**
+     * 根据城市id查询城市
+     *
+     * @param cid
+     * @return
+     */
+    public City queryCityByCid(int cid) {
         SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.query("citycode", null, "cid=?", new String[]{parentId + ""}, null, null, null);
+        Cursor cursor = database.query("citycode", null, "cid=?", new String[]{cid + ""}, null, null, null);
 
         City city = new City();
         if (cursor.moveToNext()) {

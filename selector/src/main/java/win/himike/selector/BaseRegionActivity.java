@@ -32,7 +32,7 @@ public abstract class BaseRegionActivity extends AppCompatActivity implements Ca
 
     private void inflateData() {
         SQLiteHelper sqLiteHelper = new SQLiteHelper(this);
-        ArrayList<City> cities = sqLiteHelper.queryCity(1);
+        ArrayList<City> cities = sqLiteHelper.queryCityList(1);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, SelectorFragment.newInstance(cities))

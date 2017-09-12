@@ -50,7 +50,8 @@ public class SelectorFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_selector, container, false);
         createView(view);
         return view;
@@ -100,7 +101,7 @@ public class SelectorFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         SQLiteHelper helper = new SQLiteHelper(getActivity());
-                        ArrayList<City> cities = helper.queryCity(mData.get(getAdapterPosition()).getCid());
+                        ArrayList<City> cities = helper.queryCityList(mData.get(getAdapterPosition()).getCid());
                         if (cities != null && !cities.isEmpty()) {
                             getFragmentManager()
                                     .beginTransaction()

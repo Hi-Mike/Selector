@@ -90,15 +90,4 @@ public class City implements Parcelable {
         dest.writeInt(parentId);
         dest.writeString(name);
     }
-
-    @Override
-    public String toString() {
-        return "City{" +
-                "id=" + id +
-                ", level=" + level +
-                ", cid=" + cid +
-                ", parentId=" + parentId +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }
