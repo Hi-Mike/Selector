@@ -35,7 +35,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         try {
-//            db.beginTransaction();
             InputStream inputStream = mContext.getResources().openRawResource(R.raw.citycode);
             InputStreamReader reader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(reader);
@@ -43,8 +42,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             while ((sql = bufferedReader.readLine()) != null) {
                 db.execSQL(sql);
             }
-//            db.endTransaction();
-//            db.setTransactionSuccessful();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,16 +62,24 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.query("citycode", null, "parentId=?", new String[]{cid + ""}, null, null, null);
         ArrayList<City> cityList = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            City city = new City();
-            city.setId(cursor.getInt(0));
-            city.setLevel(cursor.getInt(1));
-            city.setCid(cursor.getInt(2));
-            city.setParentId(cursor.getInt(3));
-            city.setName(cursor.getString(4));
-            cityList.add(city);
+        try {
+            while (cursor.moveToNext()) {
+                City city = new City();
+                city.setId(cursor.getInt(0));
+                city.setLevel(cursor.getInt(1));
+                city.setCid(cursor.getInt(2));
+                city.setParentId(cursor.getInt(3));
+                city.setName(cursor.getString(4));
+                cityList.add(city);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+                cursor = null;
+            }
+            database.close();
         }
-        cursor.close();
+
         return cityList;
     }
 
@@ -104,16 +109,23 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public City queryCityByCid(int cid) {
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.query("citycode", null, "cid=?", new String[]{cid + ""}, null, null, null);
-
         City city = new City();
-        if (cursor.moveToNext()) {
-            city.setId(cursor.getInt(0));
-            city.setLevel(cursor.getInt(1));
-            city.setCid(cursor.getInt(2));
-            city.setParentId(cursor.getInt(3));
-            city.setName(cursor.getString(4));
+        try {
+            if (cursor.moveToNext()) {
+                city.setId(cursor.getInt(0));
+                city.setLevel(cursor.getInt(1));
+                city.setCid(cursor.getInt(2));
+                city.setParentId(cursor.getInt(3));
+                city.setName(cursor.getString(4));
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+                cursor = null;
+            }
+            database.close();
         }
-        cursor.close();
+
         return city;
     }
 }
