@@ -17,6 +17,7 @@ import java.util.List;
 import win.himike.selector.entity.City;
 
 import static win.himike.selector.BaseRegionActivity.CITY;
+import static win.himike.selector.BaseRegionActivity.MAX_LEVEL;
 
 /**
  * Created by HiMike on 2017/9/3.
@@ -24,9 +25,10 @@ import static win.himike.selector.BaseRegionActivity.CITY;
 
 public class SelectorFragment extends Fragment {
 
-    public static SelectorFragment newInstance(ArrayList<City> cityList) {
+    public static SelectorFragment newInstance(ArrayList<City> cityList, int maxLevel) {
         Bundle args = new Bundle();
         args.putParcelableArrayList(CITY, cityList);
+        args.putInt(MAX_LEVEL, maxLevel);
         SelectorFragment fragment = new SelectorFragment();
         fragment.setArguments(args);
         return fragment;
@@ -35,11 +37,13 @@ public class SelectorFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ItemAdapter mAdapter;
     private ArrayList<City> mCity;
+    private int maxLevel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCity = getArguments().getParcelableArrayList(CITY);
+        maxLevel = getArguments().getInt(MAX_LEVEL, 3);
     }
 
     @Override
@@ -101,11 +105,11 @@ public class SelectorFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         SQLiteHelper helper = new SQLiteHelper(getActivity());
-                        ArrayList<City> cities = helper.queryCityList(mData.get(getAdapterPosition()).getCid());
+                        ArrayList<City> cities = helper.queryCityList(mData.get(getAdapterPosition()).getCid(), maxLevel);
                         if (cities != null && !cities.isEmpty()) {
                             getFragmentManager()
                                     .beginTransaction()
-                                    .replace(R.id.container, SelectorFragment.newInstance(cities))
+                                    .replace(R.id.container, SelectorFragment.newInstance(cities, maxLevel))
                                     .addToBackStack(null)
                                     .commit();
                         } else {

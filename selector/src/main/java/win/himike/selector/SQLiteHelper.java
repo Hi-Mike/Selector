@@ -58,9 +58,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
      * @param cid 上级城市id
      * @return
      */
-    public ArrayList<City> queryCityList(int cid) {
+    public ArrayList<City> queryCityList(int cid, int level) {
         SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.query("citycode", null, "parentId=?", new String[]{cid + ""}, null, null, null);
+        Cursor cursor = database.query("citycode", null, "parentId=? and level<=?", new String[]{cid + "", level + ""}, null, null, null);
         ArrayList<City> cityList = new ArrayList<>();
         try {
             while (cursor.moveToNext()) {

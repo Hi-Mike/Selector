@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import win.himike.selector.entity.City;
 
+import static win.himike.selector.BaseRegionActivity.MAX_LEVEL;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextView;
@@ -21,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(MainActivity.this, RegionActivity.class), RegionActivity.REQUEST_CITY);
+                startActivityForResult(new Intent(MainActivity.this, RegionActivity.class).putExtra(MAX_LEVEL, 2), RegionActivity.REQUEST_CITY);
             }
         });
     }

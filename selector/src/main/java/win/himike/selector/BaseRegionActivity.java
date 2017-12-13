@@ -16,6 +16,9 @@ public abstract class BaseRegionActivity extends AppCompatActivity implements Ca
     public static final int REQUEST_CITY = 233;
     public static final String CITY = "city";
     public static final String SELECTED = "selected";
+    public static final String MAX_LEVEL = "level";
+
+    private int level = 3;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,15 +30,19 @@ public abstract class BaseRegionActivity extends AppCompatActivity implements Ca
             setContentView(R.layout.activity_region);
         }
 
+        if (getIntent().hasExtra(MAX_LEVEL)) {
+            level = getIntent().getIntExtra(MAX_LEVEL, 3);
+        }
+
         inflateData();
     }
 
     private void inflateData() {
         SQLiteHelper sqLiteHelper = new SQLiteHelper(this);
-        ArrayList<City> cities = sqLiteHelper.queryCityList(1);
+        ArrayList<City> cities = sqLiteHelper.queryCityList(1, level);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, SelectorFragment.newInstance(cities))
+                .replace(R.id.container, SelectorFragment.newInstance(cities, level))
                 .commit();
     }
 
